@@ -1,0 +1,790 @@
+<div class="shopify-admin-layout">
+  <!-- =========================================================================
+       SHOPIFY LEFT SIDEBAR (Matching screenshot exactly)
+       ========================================================================= -->
+  <aside class="shopify-sidebar">
+    <!-- Top Branding & Search -->
+    <div class="sidebar-top">
+      <div class="shopify-logo-row">
+        <svg class="shopify-bag-svg" viewBox="0 0 30 30" width="22" height="22" fill="none">
+          <path d="M24.2 8.7h-3.4c-.2-3.8-2.6-6.7-5.8-6.7s-5.6 2.9-5.8 6.7H5.8L3 27h24l-2.8-18.3zM15 4c2.1 0 3.8 2 4 4.7H11c.2-2.7 1.9-4.7 4-4.7zm6.7 6.7l2.2 14.3H6.1L8.3 10.7h13.4z" fill="#95BF47"/>
+        </svg>
+        <span class="store-badge-name">Shopify</span>
+        <button class="store-menu-dots" title="Toko: SYBofficial">···</button>
+      </div>
+
+      <!-- Search Input Ctrl K -->
+      <div class="sidebar-search-box">
+        <span class="search-lens-icon">🔍</span>
+        <input type="text" placeholder="Search" />
+        <span class="kbd-shortcut">Ctrl K</span>
+      </div>
+    </div>
+
+    <!-- Main Navigation List -->
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a class="nav-item" [class.active]="currentTab() === 'products' && false" (click)="setTab('products')">
+          <span class="nav-icon">🏠</span>
+          <span class="nav-label">Home</span>
+        </a>
+
+        <a class="nav-item" [class.active]="currentTab() === 'orders'" (click)="setTab('orders')">
+          <span class="nav-icon">📦</span>
+          <span class="nav-label">Orders</span>
+          <span class="nav-counter-pill">10</span>
+        </a>
+
+        <!-- Products (Active & Expanded as in screenshot) -->
+        <div class="nav-item-group expanded">
+          <a class="nav-item active" (click)="setTab('products')">
+            <span class="nav-icon">🏷️</span>
+            <span class="nav-label">Products</span>
+          </a>
+          <div class="nav-sub-items">
+            <a class="sub-item">Collections</a>
+            <a class="sub-item">Inventory</a>
+            <a class="sub-item">Purchase orders</a>
+            <a class="sub-item">Transfers</a>
+            <a class="sub-item">Gift cards</a>
+          </div>
+        </div>
+
+        <a class="nav-item">
+          <span class="nav-icon">👥</span>
+          <span class="nav-label">Customers</span>
+        </a>
+
+        <a class="nav-item">
+          <span class="nav-icon">📈</span>
+          <span class="nav-label">Growth</span>
+        </a>
+
+        <a class="nav-item">
+          <span class="nav-icon">🏷️</span>
+          <span class="nav-label">Discounts</span>
+        </a>
+
+        <a class="nav-item">
+          <span class="nav-icon">📑</span>
+          <span class="nav-label">Content</span>
+        </a>
+
+        <a class="nav-item">
+          <span class="nav-icon">🌐</span>
+          <span class="nav-label">Markets</span>
+        </a>
+
+        <a class="nav-item">
+          <span class="nav-icon">📊</span>
+          <span class="nav-label">Analytics</span>
+        </a>
+      </div>
+
+      <!-- Sales Channels Section -->
+      <div class="sidebar-heading">
+        <span>Sales channels</span>
+        <span class="heading-arrow">›</span>
+      </div>
+      <div class="nav-section">
+        <a routerLink="/" class="nav-item channel-item" title="Lihat Toko Online Live">
+          <span class="nav-icon">🖥️</span>
+          <span class="nav-label">Online Store</span>
+          <span class="channel-view-eye" title="Pratinjau Toko">👁️</span>
+        </a>
+        <a class="nav-item">
+          <span class="nav-icon">🤖</span>
+          <span class="nav-label">Agentic</span>
+        </a>
+        <a class="nav-item">
+          <span class="nav-icon">♾️</span>
+          <span class="nav-label">Facebook & Instagram</span>
+        </a>
+      </div>
+
+      <!-- Apps Section (JNE & J&T Express as in screenshot) -->
+      <div class="sidebar-heading">
+        <span>Apps</span>
+        <span class="heading-arrow">›</span>
+      </div>
+      <div class="nav-section">
+        <a class="nav-item app-item" [class.active]="currentTab() === 'shipping'" (click)="setTab('shipping')">
+          <span class="app-icon-badge jne">JNE</span>
+          <span class="nav-label">JNE Shipping</span>
+        </a>
+        <a class="nav-item app-item" [class.active]="currentTab() === 'shipping'" (click)="setTab('shipping')">
+          <span class="app-icon-badge jnt">J&T</span>
+          <span class="nav-label">J&T Express Indonesia</span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Bottom Sidebar (Settings & Profile) -->
+    <div class="sidebar-bottom">
+      <a class="nav-item" (click)="setTab('shipping')">
+        <span class="nav-icon">⚙️</span>
+        <span class="nav-label">Settings</span>
+      </a>
+
+      <div class="sidebar-user-card">
+        <div class="store-avatar">SYB</div>
+        <div class="store-info">
+          <div class="store-title">{{ authService.currentUser()?.username || 'SYBofficial' }}</div>
+          <div class="store-sub">Cipher Auth: AES-256 Valid</div>
+        </div>
+        <button class="btn-sidebar-logout" (click)="logoutAdmin()" title="Logout Sesi Admin">🚪</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- =========================================================================
+       MAIN CONTENT CANVAS
+       ========================================================================= -->
+  <main class="shopify-main-canvas">
+    <!-- Top Bar with Store View and Sidekick -->
+    <div class="canvas-topbar">
+      <div class="topbar-left">
+        <div class="storefront-switch-banner">
+          <span>Admin Terotentikasi: <strong>{{ authService.currentUser()?.username || 'SYBofficial' }}</strong></span>
+          <span class="dot-separator">•</span>
+          <a routerLink="/" class="link-view-storefront">
+            <span>👁️ Buka Storefront Customer</span>
+            <span>→</span>
+          </a>
+          <button class="btn-topbar-logout" (click)="logoutAdmin()" title="Logout Sesi Admin">
+            <span>🚪 Logout</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <!-- Tab Switcher for Admin Pages -->
+        <div class="admin-view-tabs">
+          <button 
+            class="tab-btn" 
+            [class.active]="currentTab() === 'products'"
+            (click)="setTab('products')">
+            📦 Products ({{ productService.products().length }})
+          </button>
+          <button 
+            class="tab-btn" 
+            [class.active]="currentTab() === 'shipping'"
+            (click)="setTab('shipping')">
+            🚚 Shipping & Logistics (JNE / J&T)
+          </button>
+          <button 
+            class="tab-btn" 
+            [class.active]="currentTab() === 'orders'"
+            (click)="setTab('orders')">
+            📋 Orders (10 Pending)
+          </button>
+        </div>
+
+        <!-- Shopify Sidekick Button -->
+        <div class="shopify-sidekick-pill">
+          <span class="sidekick-icon">✨</span>
+          <span>Work with Sidekick</span>
+          <span class="sidekick-controls">+ 🎙️</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification Banner -->
+    @if (toastMessage()) {
+      <div class="admin-toast-bar">
+        <span>{{ toastMessage() }}</span>
+      </div>
+    }
+
+    <!-- =========================================================================
+         TAB 1: PRODUCTS MANAGEMENT (Matches Screenshot Exactly)
+         ========================================================================= -->
+    @if (currentTab() === 'products') {
+      <div class="admin-page-content">
+        <!-- Products Header Bar -->
+        <div class="page-header-row">
+          <div class="page-title-group">
+            <span class="page-title-icon">🏷️</span>
+            <h1 class="page-title-text">Products</h1>
+          </div>
+
+          <div class="page-actions-group">
+            <button class="btn-shopify-secondary">👁️ View as</button>
+            <button class="btn-shopify-secondary">Import</button>
+            <button class="btn-shopify-secondary">Export</button>
+            <button class="btn-shopify-secondary">More actions ▾</button>
+            <button class="btn-shopify-primary" (click)="openAddProduct()">+ Add product</button>
+          </div>
+        </div>
+
+        <!-- 30 Days Quick Metrics Row (Exact from screenshot) -->
+        <div class="shopify-metrics-card">
+          <div class="metric-filter-pill">
+            <span>📅 30 days</span>
+            <span>▾</span>
+          </div>
+
+          <div class="metric-stat-item">
+            <span class="metric-label">Average sell-through rate</span>
+            <span class="metric-value">74.2%</span>
+          </div>
+
+          <div class="metric-stat-item">
+            <span class="metric-label">Products by days of inventory remaining</span>
+            <span class="metric-value">34 days</span>
+          </div>
+
+          <div class="metric-stat-item">
+            <span class="metric-label">ABC product analysis</span>
+            <span class="metric-value text-blue">IDR 143.850.000 (Class A)</span>
+          </div>
+        </div>
+
+        <!-- Filter & Search Toolbar -->
+        <div class="shopify-table-card">
+          <div class="table-toolbar">
+            <div class="toolbar-tabs">
+              <button 
+                class="toolbar-tab-btn" 
+                [class.active]="statusFilter() === 'All'"
+                (click)="statusFilter.set('All')">
+                All
+              </button>
+              <button 
+                class="toolbar-tab-btn" 
+                [class.active]="statusFilter() === 'Active'"
+                (click)="statusFilter.set('Active')">
+                Active
+              </button>
+              <button 
+                class="toolbar-tab-btn" 
+                [class.active]="statusFilter() === 'Draft'"
+                (click)="statusFilter.set('Draft')">
+                Draft
+              </button>
+            </div>
+
+            <div class="toolbar-search-field">
+              <span class="search-lens-small">🔍</span>
+              <input 
+                type="text" 
+                placeholder="Search and filter products..." 
+                [(ngModel)]="searchTable"
+              />
+            </div>
+
+            <div class="toolbar-icons">
+              <button class="icon-tool-btn" title="View Columns">▥</button>
+            </div>
+          </div>
+
+          <!-- Product Table -->
+          <div class="table-responsive-wrapper">
+            <table class="shopify-products-table">
+              <thead>
+                <tr>
+                  <th class="th-checkbox">
+                    <input 
+                      type="checkbox" 
+                      [checked]="isAllSelected()"
+                      (change)="toggleSelectAll()"
+                    />
+                  </th>
+                  <th class="th-product">Product</th>
+                  <th class="th-status">Status</th>
+                  <th class="th-inventory">Inventory</th>
+                  <th class="th-category">Category</th>
+                  <th class="th-channels">Channels</th>
+                  <th class="th-catalogs">Catalogs</th>
+                  <th class="th-type">Product type</th>
+                  <th class="th-actions">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (prod of adminFilteredProducts(); track prod.id) {
+                  <tr [class.selected-row]="selectedProductIds().has(prod.id)">
+                    <td class="td-checkbox">
+                      <input 
+                        type="checkbox" 
+                        [checked]="selectedProductIds().has(prod.id)"
+                        (change)="toggleSelect(prod.id)"
+                      />
+                    </td>
+                    
+                    <!-- Product Title + Icon -->
+                    <td class="td-product">
+                      <div class="table-product-cell">
+                        <div class="table-product-thumb" [style.background]="prod.accentColor + '20'">
+                          <span>{{ prod.iconEmoji }}</span>
+                        </div>
+                        <div class="table-product-title-group">
+                          <span class="table-prod-name" [title]="prod.title">{{ prod.title }}</span>
+                          <span class="table-prod-price">Rp {{ prod.price.toLocaleString('id-ID') }}</span>
+                        </div>
+                      </div>
+                    </td>
+
+                    <!-- Status Pill -->
+                    <td class="td-status">
+                      <button 
+                        class="status-pill" 
+                        [class.active-pill]="prod.status === 'Active'"
+                        [class.draft-pill]="prod.status === 'Draft'"
+                        (click)="productService.toggleProductStatus(prod.id)"
+                        title="Klik untuk ubah status">
+                        {{ prod.status }}
+                      </button>
+                    </td>
+
+                    <!-- Inventory Stock -->
+                    <td class="td-inventory">
+                      @if (prod.inventory > 0) {
+                        <div class="inventory-info">
+                          <span class="stock-num">{{ prod.inventory.toLocaleString('id-ID') }} in stock</span>
+                          @if (prod.variantsCount > 1) {
+                            <span class="variants-note">for {{ prod.variantsCount }} variants</span>
+                          }
+                        </div>
+                      } @else {
+                        <span class="stock-out-text">0 in stock</span>
+                      }
+                      <div class="stock-quick-btns">
+                        <button (click)="quickUpdateStock(prod, -10)" title="Kurang 10">-10</button>
+                        <button (click)="quickUpdateStock(prod, 50)" title="Tambah 50">+50</button>
+                      </div>
+                    </td>
+
+                    <!-- Category -->
+                    <td class="td-category">
+                      <span class="category-subdued">{{ prod.category }}</span>
+                    </td>
+
+                    <!-- Channels -->
+                    <td class="td-channels">
+                      <span>{{ prod.channels }}</span>
+                    </td>
+
+                    <!-- Catalogs -->
+                    <td class="td-catalogs">
+                      <span>{{ prod.catalogs }}</span>
+                    </td>
+
+                    <!-- Product Type -->
+                    <td class="td-type">
+                      <span class="type-text">{{ prod.productType }}</span>
+                    </td>
+
+                    <!-- Actions -->
+                    <td class="td-actions">
+                      <div class="row-actions-group">
+                        <a routerLink="/" class="action-eye-btn" title="Lihat di Storefront">👁️</a>
+                        <button class="action-delete-btn" (click)="productService.deleteProduct(prod.id)" title="Hapus Produk">🗑️</button>
+                      </div>
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="9" class="td-empty">
+                      <p>Tidak ada produk yang cocok dengan pencarian.</p>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination Bar -->
+          <div class="table-pagination-footer">
+            <span class="pagination-info">Showing {{ adminFilteredProducts().length }} of {{ productService.products().length }} products</span>
+            <div class="pagination-controls">
+              <button disabled>&lt;</button>
+              <span class="page-indicator">1-{{ adminFilteredProducts().length }}</span>
+              <button disabled>&gt;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- =========================================================================
+         TAB 2: SHIPPING MANAGEMENT & LIVE ONGKIR (JNE & J&T Express Apps)
+         ========================================================================= -->
+    @if (currentTab() === 'shipping') {
+      <div class="admin-page-content">
+        <div class="page-header-row">
+          <div class="page-title-group">
+            <span class="page-title-icon">🚚</span>
+            <h1 class="page-title-text">Shipping & Delivery Management</h1>
+          </div>
+          <div class="page-actions-group">
+            <span class="badge-shopify-app-pill">JNE & J&T Express Official Apps Connected</span>
+          </div>
+        </div>
+
+        <!-- Integrated Couriers Cards -->
+        <div class="couriers-overview-grid">
+          @for (c of shippingService.couriers; track c.code) {
+            <div class="courier-card" [style.border-top-color]="c.color">
+              <div class="courier-card-header">
+                <span class="courier-big-icon">{{ c.icon }}</span>
+                <div>
+                  <h3 class="courier-name">{{ c.name }}</h3>
+                  <span class="courier-app-label">{{ c.appName }}</span>
+                </div>
+              </div>
+              <div class="courier-meta-line">
+                <span>Default ETA: <strong>{{ c.defaultEta }}</strong></span>
+                <span class="status-pill active-pill">Connected</span>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Live Ongkir Calculator & Route Simulator -->
+        <div class="shipping-simulator-card">
+          <div class="sim-header">
+            <h3>⚡ Simulator Tarif Ongkir Otomatis (Live Rate Calculator)</h3>
+            <p>Hitung tarif ongkir real-time dari Gudang Utama SYB Surabaya ke seluruh kota tujuan di Indonesia.</p>
+          </div>
+
+          <div class="sim-controls-grid">
+            <div class="sim-field">
+              <label>Kota Asal (Origin Hub):</label>
+              <input type="text" [value]="calcOriginCity" disabled class="input-disabled" />
+            </div>
+
+            <div class="sim-field">
+              <label>Kota Tujuan Pembeli (Destination):</label>
+              <select [(ngModel)]="calcDestCity" class="select-sim">
+                @for (d of shippingService.shippingDestinations; track d.city) {
+                  <option [value]="d.city">{{ d.city }} ({{ d.province }})</option>
+                }
+              </select>
+            </div>
+
+            <div class="sim-field">
+              <label>Berat Paket (Kg):</label>
+              <input type="number" min="1" max="50" [(ngModel)]="calcWeightKg" class="input-sim" />
+            </div>
+          </div>
+
+          <!-- Rate Results Table -->
+          <div class="rates-results-box">
+            <h4 class="rates-result-title">Pilihan Layanan & Biaya Ongkir ke {{ calcDestCity() }} ({{ calcWeightKg() }} Kg):</h4>
+            <div class="rates-cards-list">
+              @for (opt of calculatedRates(); track opt.id) {
+                <div class="rate-option-card">
+                  <div class="rate-card-left">
+                    <span class="courier-tag-badge" [class.jnt]="opt.courier === 'J&T'" [class.jne]="opt.courier === 'JNE'">
+                      {{ opt.courier }}
+                    </span>
+                    <div>
+                      <h4 class="rate-service-title">{{ opt.serviceName }}</h4>
+                      <span class="rate-etd">Estimasi Tiba: <strong>{{ opt.etd }}</strong></span>
+                    </div>
+                  </div>
+
+                  <div class="rate-card-right">
+                    @if (opt.badge) {
+                      <span class="rate-badge-recommend">{{ opt.badge }}</span>
+                    }
+                    <div class="rate-cost">Rp {{ opt.cost.toLocaleString('id-ID') }}</div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Automation & Free Ongkir Policy Settings -->
+        <div class="shipping-rules-card">
+          <h3>Pengaturan Aturan Pengiriman Toko (Shopify Rules)</h3>
+          <div class="rules-list">
+            <div class="rule-item">
+              <div class="rule-check">✓</div>
+              <div>
+                <h4>Free Ongkir Otomatis (Promo Glowgirl)</h4>
+                <p>Pesanan dengan nilai subtotal ≥ Rp 150.000 otomatis mendapatkan gratis ongkir se-Jabodetabek & Surabaya.</p>
+              </div>
+              <span class="rule-status active">Aktif</span>
+            </div>
+
+            <div class="rule-item">
+              <div class="rule-check">✓</div>
+              <div>
+                <h4>Auto-Generate Resi Airway Bill (AWB)</h4>
+                <p>Saat pesanan diubah menjadi "Shipped", sistem otomatis mengenerate no. resi resmi kurir dan mengirim SMS notifikasi ke pelanggan.</p>
+              </div>
+              <span class="rule-status active">Aktif</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- =========================================================================
+         TAB 3: ORDERS MANAGEMENT (10 Active Pending Orders)
+         ========================================================================= -->
+    @if (currentTab() === 'orders') {
+      <div class="admin-page-content">
+        <div class="page-header-row">
+          <div class="page-title-group">
+            <span class="page-title-icon">📋</span>
+            <h1 class="page-title-text">Orders (10 Pending Fulfillment)</h1>
+          </div>
+          <div class="page-actions-group">
+            <button class="btn-shopify-secondary">Export Orders</button>
+            <button class="btn-shopify-primary">Create order</button>
+          </div>
+        </div>
+
+        <!-- Orders Table Card -->
+        <div class="shopify-table-card">
+          <div class="table-responsive-wrapper">
+            <table class="shopify-products-table">
+              <thead>
+                <tr>
+                  <th>Order #</th>
+                  <th>Date</th>
+                  <th>Customer</th>
+                  <th>Items Purchased</th>
+                  <th>Total (IDR)</th>
+                  <th>Payment</th>
+                  <th>Fulfillment Status</th>
+                  <th>Courier & AWB</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (ord of shippingService.orders(); track ord.id) {
+                  <tr>
+                    <td>
+                      <strong class="order-num-text">{{ ord.orderNumber }}</strong>
+                    </td>
+                    <td class="text-subdued">{{ ord.createdAt }}</td>
+                    <td>
+                      <div class="customer-cell">
+                        <strong>{{ ord.customerName }}</strong>
+                        <span class="text-subdued">{{ ord.shippingAddress.city }}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="order-items-summary">
+                        @for (it of ord.items; track it.productId) {
+                          <span class="item-tag-pill">
+                            {{ it.emoji }} {{ it.quantity }}x {{ it.variantName }}
+                          </span>
+                        }
+                      </div>
+                    </td>
+                    <td>
+                      <strong>Rp {{ ord.total.toLocaleString('id-ID') }}</strong>
+                    </td>
+                    <td>
+                      <span class="status-pill active-pill">{{ ord.paymentStatus }}</span>
+                    </td>
+                    <td>
+                      <span 
+                        class="status-pill" 
+                        [class.active-pill]="ord.fulfillmentStatus === 'Delivered'"
+                        [class.yellow-pill]="ord.fulfillmentStatus === 'Shipped'"
+                        [class.draft-pill]="ord.fulfillmentStatus === 'Ready to Ship' || ord.fulfillmentStatus === 'Unfulfilled'">
+                        {{ ord.fulfillmentStatus }}
+                      </span>
+                    </td>
+                    <td>
+                      <div class="awb-cell">
+                        <span class="courier-badge-mini" [class.jnt]="ord.courier === 'J&T'" [class.jne]="ord.courier === 'JNE'">
+                          {{ ord.courier }}
+                        </span>
+                        @if (ord.trackingNumber) {
+                          <code class="awb-code">{{ ord.trackingNumber }}</code>
+                        } @else {
+                          <span class="no-awb-text">Belum ada resi</span>
+                        }
+                      </div>
+                    </td>
+                    <td>
+                      <div class="order-action-btns">
+                        @if (!ord.trackingNumber) {
+                          <button class="btn-fulfill-mini" (click)="fulfillOrder(ord)">
+                            Kirim & Buat Resi
+                          </button>
+                        } @else {
+                          <button class="btn-label-mini" (click)="printShippingLabel(ord)">
+                            🏷️ Cetak Label
+                          </button>
+                        }
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    }
+  </main>
+</div>
+
+<!-- =========================================================================
+     MODAL: ADD NEW PRODUCT
+     ========================================================================= -->
+@if (isAddProductOpen()) {
+  <div class="modal-backdrop" (click)="closeAddProduct()">
+    <div class="shopify-modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>+ Add new product to SYBofficial</h3>
+        <button class="modal-close-x" (click)="closeAddProduct()">✕</button>
+      </div>
+
+      <div class="modal-body-form">
+        <div class="form-row">
+          <label>Title</label>
+          <input type="text" placeholder="e.g. NEW SYB Watermelon Glow Sleeping Mask" [(ngModel)]="newProductTitle" />
+        </div>
+
+        <div class="form-row">
+          <label>Subtitle / Description</label>
+          <input type="text" placeholder="Short benefit explanation..." [(ngModel)]="newProductSubtitle" />
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-row">
+            <label>Category Label</label>
+            <select [(ngModel)]="newProductCategoryLabel">
+              <option value="Wajah">Wajah (Face Care)</option>
+              <option value="Tubuh">Tubuh (Body Care)</option>
+              <option value="Makeup">Makeup & Blush</option>
+              <option value="Paket Ritual">Paket Ritual</option>
+              <option value="Aksesoris">Aksesoris</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <label>Product Type</label>
+            <input type="text" [(ngModel)]="newProductCategory" />
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-row">
+            <label>Price (IDR)</label>
+            <input type="number" [(ngModel)]="newProductPrice" />
+          </div>
+
+          <div class="form-row">
+            <label>Original Price (IDR)</label>
+            <input type="number" [(ngModel)]="newProductOrigPrice" />
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-row">
+            <label>Inventory Stock</label>
+            <input type="number" [(ngModel)]="newProductInventory" />
+          </div>
+
+          <div class="form-row">
+            <label>BPOM Registration Number</label>
+            <input type="text" [(ngModel)]="newProductBpom" />
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-row">
+            <label>Badge Tag</label>
+            <input type="text" [(ngModel)]="newProductBadge" />
+          </div>
+
+          <div class="form-row">
+            <label>Icon Emoji</label>
+            <input type="text" [(ngModel)]="newProductEmoji" />
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-shopify-secondary" (click)="closeAddProduct()">Cancel</button>
+        <button class="btn-shopify-primary" (click)="submitNewProduct()">Save Product</button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- =========================================================================
+     MODAL: PRINT SHIPPING LABEL (JNE / J&T Official Waybill)
+     ========================================================================= -->
+@if (isLabelModalOpen() && activeLabelOrder(); as labelOrder) {
+  <div class="modal-backdrop" (click)="closeLabelModal()">
+    <div class="shipping-label-modal" (click)="$event.stopPropagation()">
+      <div class="label-modal-top">
+        <h3>Pratinjau Label Pengiriman Ekspedisi (Resi Otomatis)</h3>
+        <button class="modal-close-x" (click)="closeLabelModal()">✕</button>
+      </div>
+
+      <!-- Printable Thermal Label Simulation -->
+      <div class="thermal-label-paper">
+        <div class="thermal-header">
+          <div class="thermal-courier-logo">
+            <strong>{{ labelOrder.courier }} EXPRESS</strong>
+            <span>{{ labelOrder.serviceName }}</span>
+          </div>
+          <div class="thermal-order-no">
+            <span>{{ labelOrder.orderNumber }}</span>
+            <span class="thermal-date">{{ labelOrder.createdAt }}</span>
+          </div>
+        </div>
+
+        <!-- Barcode Graphic Simulation -->
+        <div class="thermal-barcode-box">
+          <div class="fake-barcode-lines">
+            <span>||| | |||| || | ||||| |||| || ||| |||| | ||||</span>
+          </div>
+          <div class="barcode-awb-text">No. Resi: {{ labelOrder.trackingNumber }}</div>
+        </div>
+
+        <!-- Sender & Receiver Box -->
+        <div class="thermal-addresses-grid">
+          <div class="addr-box sender">
+            <span class="addr-tag">PENGIRIM:</span>
+            <strong>PT SYB Official Indonesia</strong>
+            <p>Rungkut Industri III No. 12, Surabaya, Jawa Timur 60293</p>
+            <p>Telp: 0812-3344-5566</p>
+          </div>
+
+          <div class="addr-box receiver">
+            <span class="addr-tag">PENERIMA:</span>
+            <strong>{{ labelOrder.customerName }}</strong>
+            <p>{{ labelOrder.shippingAddress.street }}</p>
+            <p>{{ labelOrder.shippingAddress.city }}, {{ labelOrder.shippingAddress.province }} {{ labelOrder.shippingAddress.postalCode }}</p>
+            <p>Telp: {{ labelOrder.customerPhone }}</p>
+          </div>
+        </div>
+
+        <!-- Goods Content Box -->
+        <div class="thermal-goods-box">
+          <span class="goods-title">ISI PAKET ({{ labelOrder.weightGrams }} gram):</span>
+          <ul class="goods-list">
+            @for (item of labelOrder.items; track item.productId) {
+              <li>• {{ item.quantity }}x {{ item.title }} ({{ item.variantName }})</li>
+            }
+          </ul>
+        </div>
+
+        <div class="thermal-footer">
+          <span>Non-COD • Lunas</span>
+          <span>Instruksi: Jangan dibanting (Fragile Kosmetik)</span>
+        </div>
+      </div>
+
+      <div class="label-modal-actions">
+        <button class="btn-shopify-secondary" (click)="closeLabelModal()">Tutup</button>
+        <button class="btn-shopify-primary" (click)="showToast('🖨️ Mengirim label ke printer thermal...'); closeLabelModal()">
+          🖨️ Cetak ke Printer Thermal
+        </button>
+      </div>
+    </div>
+  </div>
+}

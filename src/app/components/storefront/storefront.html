@@ -1,0 +1,1173 @@
+<!-- =========================================================================
+     NAVBAR 1: TOP UTILITY & AUTH NAVBAR (Upper Tier with Login on Left)
+     ========================================================================= -->
+<div class="top-utility-navbar">
+  <div class="top-navbar-container">
+    <!-- LEFT SIDE: Login / Admin Authentication Status -->
+    <div class="top-nav-left">
+      @if (!authService.isAuthenticated()) {
+        <button class="top-login-pill-btn" (click)="authService.openLoginModal('/admin/products')" title="Login ke Sistem Pengelolaan Produk & Pengiriman">
+          <span class="auth-icon-key">🔐</span>
+          <span class="auth-btn-text">Login Admin</span>
+          <span class="auth-hint-badge">Ubah Produk</span>
+        </button>
+      } @else {
+        <div class="top-admin-session-group">
+          <span class="admin-status-badge">
+            <span class="admin-pulse-indicator"></span>
+            <span>Admin: <strong>{{ authService.currentUser()?.username }}</strong></span>
+          </span>
+          <button class="top-goto-admin-btn" (click)="tryAccessAdmin('/admin/products')" title="Buka Dashboard Shopify">
+            <span>🛍️ Kelola Produk & Pengiriman</span>
+          </button>
+          <button class="top-logout-btn" (click)="handleLogout()" title="Logout dari Sesi Admin">
+            <span>Logout</span>
+          </button>
+        </div>
+      }
+    </div>
+
+    <!-- CENTER: Promo Marquee / Message -->
+    <div class="top-nav-center">
+      <span class="promo-sparkle">💖</span>
+      <span class="promo-text"><strong>PROMO SPESIAL:</strong> FREE ONGKIR JABODETABEK & SURABAYA Min. Rp 150.000</span>
+      <span class="promo-dot">•</span>
+      <span class="promo-code-text">KODE: <strong>GLOWGIRL</strong> (15% OFF)</span>
+    </div>
+
+    <!-- RIGHT SIDE: Trust Indicators & Currency -->
+    <div class="top-nav-right">
+      <span class="top-trust-badge">🌸 100% BPOM Certified</span>
+      <span class="top-currency-pill">🇮🇩 IDR (Rp)</span>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================================
+     NAVBAR 2: MAIN BRAND & NAVIGATION NAVBAR (Lower Tier - No Dashboard Button)
+     ========================================================================= -->
+<header class="main-navbar">
+  <div class="navbar-container">
+    <!-- Brand Logo Group (Left Side) -->
+    <a routerLink="/" class="brand-logo-group">
+      <div class="logo-heart-badge">💖</div>
+      <div class="logo-texts">
+        <span class="logo-main">SYB</span>
+        <span class="logo-sub">INDONESIA</span>
+      </div>
+      <span class="official-pill">Official Store</span>
+    </a>
+
+    <!-- Center Navigation Links -->
+    <nav class="nav-links-desktop">
+      <a href="#hero" class="nav-link active">Home</a>
+      <a href="#bestseller" class="nav-link">Bestseller</a>
+      <a href="#glow-ritual" class="nav-link">Glow Ritual ✦</a>
+      <a href="#catalog" class="nav-link">Katalog Produk</a>
+      <a href="#why-girls-love" class="nav-link">Why SYB?</a>
+      <a (click)="openQuiz()" class="nav-link quiz-highlight-link">
+        <span class="quiz-sparkle">🪄</span> Skin Quiz
+      </a>
+      <a href="#reviews" class="nav-link">Testimoni</a>
+    </nav>
+
+    <!-- Right Actions (Search & Bag ONLY - Dashboard Button Removed!) -->
+    <div class="nav-actions-group">
+      <!-- Search Trigger Input -->
+      <div class="nav-search-box">
+        <span class="search-icon">🔍</span>
+        <input 
+          type="text" 
+          placeholder="Cari peeling gel, red jelly..." 
+          [value]="searchInputValue"
+          (input)="handleSearch($event)"
+        />
+        @if (searchInputValue) {
+          <button class="search-clear-btn" (click)="clearSearch()">✕</button>
+        }
+      </div>
+
+      <!-- Cute Shopping Bag Button -->
+      <button class="cart-trigger-btn" (click)="cartService.openCart()" aria-label="Buka Keranjang Belanja">
+        <span class="cart-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/>
+          </svg>
+          @if (cartService.totalItemsCount() > 0) {
+            <span class="cart-count-badge">{{ cartService.totalItemsCount() }}</span>
+          }
+        </span>
+        <span class="cart-btn-label">Bag</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- =========================================================================
+       HERO SECTION (Inspired by Odyssee luxury spacing & TakeBoost playful modernism)
+       ========================================================================= -->
+  <section id="hero" class="hero-section">
+    <!-- Ambient Background Blobs -->
+    <div class="ambient-glow ambient-glow-1"></div>
+    <div class="ambient-glow ambient-glow-2"></div>
+
+    <div class="hero-wrapper">
+      <div class="hero-content">
+        <!-- Floating Sticker Badges -->
+        <div class="hero-stickers-row">
+          <span class="badge-sticker badge-glow anim-float">
+            ✨ #1 Skincare Pilihan Cewek Indonesia
+          </span>
+          <span class="badge-sticker anim-float-reverse" style="background:#e8faf3; color:#0e6245; border-color:#cbf4c9;">
+            🌿 100% BPOM Certified Safe
+          </span>
+        </div>
+
+        <h1 class="hero-title">
+          Glow Cantik Alami, <br/>
+          <span class="hero-title-highlight">Bikin Percaya Diri</span> <br/>
+          Setiap Hari.
+        </h1>
+
+        <p class="hero-description">
+          Formula revolusioner kaya <strong>Marine DNA Salmon & Red Jelly Active</strong> yang dirancang istimewa untuk kulit perempuan tropis. Ringan meresap, bebas lengket, dan hasil cerah bercahaya tampak dalam 3 hari pemakaian!
+        </p>
+
+        <!-- CTA Action Buttons -->
+        <div class="hero-cta-group">
+          <a href="#catalog" class="btn-cute-primary hero-btn-main">
+            <span>Lihat Koleksi Glowing</span>
+            <span class="arrow-icon">→</span>
+          </a>
+          <button (click)="openQuiz()" class="btn-cute-secondary">
+            <span>🪄 Cari Skincare Match Kamu</span>
+          </button>
+        </div>
+
+        <!-- Social Proof Stats Mini Strip -->
+        <div class="hero-stats-row">
+          <div class="stat-item">
+            <span class="stat-number">44.000+</span>
+            <span class="stat-label">Botol Terjual</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">4.9 / 5.0</span>
+            <span class="stat-label">Rating Kepuasan</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">Halal & BPOM Asli</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Visual Art & Interactive Product Stage -->
+      <div class="hero-visual-stage">
+        <div class="visual-card-glass anim-float">
+          <!-- Floating Feature Sticker 1 -->
+          <div class="floating-sticker sticker-top-left">
+            <span class="sticker-emoji">☁️</span>
+            <div>
+              <div class="sticker-title">Zero Sticky Feel</div>
+              <div class="sticker-sub">Meresap dalam 30 detik</div>
+            </div>
+          </div>
+
+          <!-- Central Hero Skincare Graphic Presentation -->
+          <div class="hero-product-display">
+            <div class="product-spotlight-orb"></div>
+            <div class="product-illustration-card">
+              <div class="product-badge-float">BEST SELLER 👑</div>
+              <div class="product-hero-emoji">🐟✨</div>
+              <h3 class="product-hero-name">SYB Bibit Whitening</h3>
+              <p class="product-hero-sub">DNA Salmon Active Glow Lotion</p>
+              <div class="product-hero-price">
+                <span class="price-curr">Rp 55.000</span>
+                <span class="price-disc">Rp 85.000</span>
+                <span class="discount-pill">-35%</span>
+              </div>
+              <button 
+                class="btn-cute-primary hero-card-add-btn"
+                (click)="onAddToCart(productService.products()[12])">
+                + Tambah ke Bag
+              </button>
+            </div>
+          </div>
+
+          <!-- Floating Feature Sticker 2 -->
+          <div class="floating-sticker sticker-bottom-right anim-float-reverse">
+            <span class="sticker-emoji">🍓</span>
+            <div>
+              <div class="sticker-title">Red Jelly Astaxanthin</div>
+              <div class="sticker-sub">Kenyal bak pudding Korea</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       INFINITE CUTE MARQUEE STRIP
+       ========================================================================= -->
+  <section class="marquee-ribbon">
+    <div class="marquee-track">
+      <div class="marquee-item"><span>✨</span> GLOW LIKE NEVER BEFORE</div>
+      <div class="marquee-item"><span>🌸</span> 100% BPOM RESMI & AMAN</div>
+      <div class="marquee-item"><span>💖</span> MARINE DNA SALMON ACTIVE</div>
+      <div class="marquee-item"><span>🚚</span> FREE ONGKIR JABODETABEK & SURABAYA</div>
+      <div class="marquee-item"><span>🍓</span> RED JELLY KOREAN FORMULA</div>
+      <div class="marquee-item"><span>🎀</span> 44.000+ GIRLS LOVED IT</div>
+      <!-- Duplicate for seamless loop -->
+      <div class="marquee-item"><span>✨</span> GLOW LIKE NEVER BEFORE</div>
+      <div class="marquee-item"><span>🌸</span> 100% BPOM RESMI & AMAN</div>
+      <div class="marquee-item"><span>💖</span> MARINE DNA SALMON ACTIVE</div>
+      <div class="marquee-item"><span>🚚</span> FREE ONGKIR JABODETABEK & SURABAYA</div>
+      <div class="marquee-item"><span>🍓</span> RED JELLY KOREAN FORMULA</div>
+      <div class="marquee-item"><span>🎀</span> 44.000+ GIRLS LOVED IT</div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       THE 4-STEP GLOW RITUAL (Odyssee Clinic inspired bespoke steps)
+       ========================================================================= -->
+  <section id="glow-ritual" class="glow-ritual-section">
+    <div class="section-container">
+      <div class="section-header-centered">
+        <span class="badge-sticker badge-glow">✦ SYB SIGNATURE METHOD ✦</span>
+        <h2 class="section-title">The 4-Step Everyday Glow Ritual</h2>
+        <p class="section-subtitle">
+          Rangkaian perawatan harian teruji klinis untuk mewujudkan kulit sehat, kenyal, dan glowing maksimal tanpa ribet.
+        </p>
+      </div>
+
+      <!-- Routine Step Tabs -->
+      <div class="routine-tabs-nav">
+        @for (item of routineSteps; track item.step) {
+          <button 
+            class="routine-tab-pill" 
+            [class.active]="activeRoutineStep() === item.step"
+            (click)="activeRoutineStep.set(item.step)">
+            <span class="step-num">{{ item.step }}</span>
+            <span class="step-title">{{ item.title }}</span>
+          </button>
+        }
+      </div>
+
+      <!-- Active Routine Step Showcase Card -->
+      @for (item of routineSteps; track item.step) {
+        @if (activeRoutineStep() === item.step) {
+          <div class="routine-showcase-card glass-panel">
+            <div class="routine-card-left">
+              <span class="routine-badge">{{ item.badge }}</span>
+              <h3 class="routine-card-title">{{ item.productName }}</h3>
+              <p class="routine-card-tagline">{{ item.tagline }}</p>
+              
+              <div class="routine-benefit-box">
+                <span class="benefit-check">✓</span>
+                <p>{{ item.benefit }}</p>
+              </div>
+
+              <div class="routine-meta-row">
+                <div class="meta-tag">
+                  <span class="meta-icon">⏰</span>
+                  <span>Waktu: <strong>{{ item.time }}</strong></span>
+                </div>
+                <div class="meta-tag">
+                  <span class="meta-icon">🛡️</span>
+                  <span>BPOM Verified</span>
+                </div>
+              </div>
+
+              <div class="routine-action-row">
+                <button 
+                  class="btn-cute-primary" 
+                  (click)="onAddToCart(productService.products()[item.step === 1 ? 0 : item.step === 2 ? 4 : item.step === 3 ? 7 : 12])">
+                  + Masukkan Step Ini ke Bag
+                </button>
+                <button 
+                  class="btn-cute-secondary"
+                  (click)="productService.openQuickView(productService.products()[item.step === 1 ? 0 : item.step === 2 ? 4 : item.step === 3 ? 7 : 12])">
+                  Detail Kandungan
+                </button>
+              </div>
+            </div>
+
+            <div class="routine-card-right">
+              <div class="routine-circle-visual" [style.background]="item.accent + '15'">
+                <div class="routine-big-emoji">{{ item.emoji }}</div>
+                <div class="routine-glow-orb" [style.box-shadow]="'0 0 60px ' + item.accent + '40'"></div>
+              </div>
+            </div>
+          </div>
+        }
+      }
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       PRODUCT CATALOG & FILTER (Shopify Integrated Products)
+       ========================================================================= -->
+  <section id="catalog" class="catalog-section">
+    <div class="section-container">
+      <div class="catalog-header-row">
+        <div>
+          <span class="badge-sticker badge-glow">CUTE BEAUTY STORE</span>
+          <h2 class="section-title">Katalog Produk Pilihan</h2>
+          <p class="section-subtitle">
+            Daftar produk resmi SYB Indonesia langsung terhubung dengan stok dashboard Shopify.
+          </p>
+        </div>
+
+        <!-- Category Pills -->
+        <div class="category-pills-filter">
+          @for (cat of categories; track cat) {
+            <button 
+              class="cat-filter-btn" 
+              [class.active]="productService.selectedCategory() === cat"
+              (click)="productService.setCategory(cat)">
+              {{ cat }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="products-grid">
+        @for (product of productService.filteredProducts(); track product.id) {
+          <article class="product-card glass-panel" [class.out-of-stock]="product.inventory === 0">
+            <!-- Top Badges -->
+            <div class="product-top-row">
+              @if (product.badge) {
+                <span class="product-badge-chip">{{ product.badge }}</span>
+              }
+              <button 
+                class="quick-view-btn" 
+                title="Lihat Detail Produk"
+                (click)="productService.openQuickView(product)">
+                👁️ Quick View
+              </button>
+            </div>
+
+            <!-- Product Visual Graphic -->
+            <div class="product-thumb-container" [style.background]="'radial-gradient(circle, ' + product.accentColor + '18 0%, transparent 70%)'">
+              <div class="product-icon-art anim-float">{{ product.iconEmoji }}</div>
+              @if (product.inventory === 0) {
+                <div class="sold-out-overlay">
+                  <span>HABIS SEGERA RESTOCK</span>
+                </div>
+              }
+            </div>
+
+            <!-- Product Info Body -->
+            <div class="product-body">
+              <div class="product-meta-small">
+                <span class="product-category-text">{{ product.categoryLabel }}</span>
+                <span class="product-rating">★ {{ product.rating }} ({{ product.reviewsCount }})</span>
+              </div>
+
+              <h3 class="product-title" (click)="productService.openQuickView(product)">
+                {{ product.title }}
+              </h3>
+
+              <p class="product-desc-short">{{ product.subtitle }}</p>
+
+              <!-- Variant Selector Pills -->
+              @if (product.variants.length > 1) {
+                <div class="product-variant-picker">
+                  <span class="variant-label-tiny">Pilihan Varian:</span>
+                  <div class="variants-row">
+                    @for (v of product.variants; track v.id) {
+                      <button 
+                        class="variant-chip" 
+                        [class.active]="getSelectedVariant(product).id === v.id"
+                        (click)="selectVariant(product, v)">
+                        {{ v.name }}
+                      </button>
+                    }
+                  </div>
+                </div>
+              }
+
+              <!-- Price & CTA -->
+              <div class="product-footer-row">
+                <div class="price-box">
+                  <span class="price-main">Rp {{ getSelectedVariant(product).price.toLocaleString('id-ID') }}</span>
+                  @if (product.originalPrice > getSelectedVariant(product).price) {
+                    <span class="price-crossed">Rp {{ product.originalPrice.toLocaleString('id-ID') }}</span>
+                  }
+                </div>
+
+                <button 
+                  class="btn-cute-primary add-bag-btn" 
+                  [disabled]="product.inventory === 0"
+                  (click)="onAddToCart(product)">
+                  @if (product.inventory === 0) {
+                    Sold Out
+                  } @else {
+                    + Beli
+                  }
+                </button>
+              </div>
+
+              <!-- BPOM Pill -->
+              <div class="product-bpom-code">
+                <span>BPOM: {{ product.bpomNumber }}</span>
+              </div>
+
+              <!-- Admin Edit Shortcut (Only visible when logged in) -->
+              @if (authService.isAuthenticated()) {
+                <div class="admin-product-control-chip">
+                  <button class="btn-admin-quick-edit" (click)="tryAccessAdmin('/admin/products')">
+                    ✏️ Ubah Produk di Shopify (Admin)
+                  </button>
+                </div>
+              }
+            </div>
+          </article>
+        } @empty {
+          <div class="empty-state-box">
+            <span class="empty-emoji">🔍🌸</span>
+            <h3>Tidak ada produk yang cocok</h3>
+            <p>Coba gunakan kata kunci pencarian lain atau pilih kategori "All".</p>
+            <button class="btn-cute-primary" (click)="clearSearch(); productService.setCategory('All')">
+              Reset Filter
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       WHY GIRLS LOVE SYB (TakeBoost inspired playful benefits)
+       ========================================================================= -->
+  <section id="why-girls-love" class="why-girls-section">
+    <div class="section-container">
+      <div class="section-header-centered">
+        <span class="badge-sticker badge-glow">WHY GIRLS FALL IN LOVE 💕</span>
+        <h2 class="section-title">Dibuat Dengan Cinta Untuk Kulit Cantikmu</h2>
+        <p class="section-subtitle">
+          Kami mendengarkan apa yang diinginkan perempuan: skincare berkualitas tinggi, aman, lucu, dan gak bikin kantong jebol!
+        </p>
+      </div>
+
+      <div class="benefits-bento-grid">
+        <!-- Bento Card 1 -->
+        <div class="bento-card card-pink glass-panel anim-float">
+          <div class="bento-emoji">🎀</div>
+          <h3 class="bento-title">Kemasan Cute & Aesthetic</h3>
+          <p class="bento-text">
+            Desain packaging pastel yang cantik dipajang di meja rias atau dibawa di dalam tas kuliah & kerja.
+          </p>
+          <span class="bento-tag">Instagrammable Always</span>
+        </div>
+
+        <!-- Bento Card 2 -->
+        <div class="bento-card card-mint glass-panel">
+          <div class="bento-emoji">🔬</div>
+          <h3 class="bento-title">Uji Klinis & BPOM Resmi</h3>
+          <p class="bento-text">
+            Semua produk SYB memiliki nomor registrasi resmi dari Badan Pengawas Obat dan Makanan (BPOM) RI. 0% merkuri & hidrokuinon.
+          </p>
+          <span class="bento-tag">100% Aman Terpercaya</span>
+        </div>
+
+        <!-- Bento Card 3 -->
+        <div class="bento-card card-peach glass-panel anim-float-reverse">
+          <div class="bento-emoji">💧</div>
+          <h3 class="bento-title">Watery Light Texture</h3>
+          <p class="bento-text">
+            Gak ada lagi drama lotion lengket bikin gerah. Formulanya langsung meresap sejuk seperti esens segar.
+          </p>
+          <span class="bento-tag">Cocok Cuaca Tropis</span>
+        </div>
+
+        <!-- Bento Card 4 -->
+        <div class="bento-card card-lavender glass-panel">
+          <div class="bento-emoji">🪙</div>
+          <h3 class="bento-title">Harga Ramah Mahasiswi</h3>
+          <p class="bento-text">
+            Bahan aktif premium seperti Marine DNA Salmon, Niacinamide 10%, dan Collagen murni dengan harga mulai Rp 15.000 saja.
+          </p>
+          <span class="bento-tag">Affordable Luxury</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       CUSTOMER REVIEWS / UGC SOCIAL WALL
+       ========================================================================= -->
+  <section id="reviews" class="reviews-section">
+    <div class="section-container">
+      <div class="section-header-centered">
+        <span class="badge-sticker badge-glow">REAL EXPERIENCES 🌟</span>
+        <h2 class="section-title">Apa Kata Cewek-Cewek SYB Squad?</h2>
+        <p class="section-subtitle">
+          Ribuan review bintang 5 dari perempuan asli Indonesia di berbagai kota.
+        </p>
+      </div>
+
+      <div class="reviews-grid">
+        @for (rev of productService.reviews(); track rev.id) {
+          <div class="review-card glass-panel">
+            <div class="review-top-row">
+              <div class="review-stars">★★★★★</div>
+              <span class="review-time">{{ rev.timeAgo }}</span>
+            </div>
+
+            <p class="review-comment">"{{ rev.comment }}"</p>
+
+            <div class="review-product-tag">
+              <span>Produk: <strong>{{ rev.productName }}</strong></span>
+            </div>
+
+            <div class="reviewer-footer">
+              <img [src]="rev.avatar" [alt]="rev.author" class="reviewer-avatar" />
+              <div>
+                <div class="reviewer-name">
+                  {{ rev.author }}
+                  @if (rev.verified) {
+                    <span class="verified-badge" title="Pembeli Terverifikasi">✓</span>
+                  }
+                </div>
+                <div class="reviewer-meta">{{ rev.city }} • {{ rev.skinType }}</div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SHOPIFY BACKOFFICE PREVIEW BANNER
+       ========================================================================= -->
+  <section class="admin-preview-cta-strip">
+    <div class="section-container">
+      <div class="admin-cta-card">
+        <div class="admin-cta-left">
+          <div class="shopify-badge-row">
+            <span class="shopify-logo-icon">🛍️</span>
+            <span>Shopify Integrated Backend</span>
+          </div>
+          <h2 class="admin-cta-title">Kelola Produk & Ekspedisi Pengiriman</h2>
+          <p class="admin-cta-desc">
+            Website ini terhubung langsung dengan sistem Shopify Admin untuk mengontrol stok 173.000+ produk, cek 10 pesanan aktif, simulasi tarif ongkir JNE & J&T Express, dan cetak no. resi pengiriman otomatis.
+          </p>
+          <div class="admin-cta-btn-row">
+            <button (click)="tryAccessAdmin('/admin/products')" class="btn-cute-primary" style="background:#000000; box-shadow:0 8px 24px rgba(0,0,0,0.25);">
+              <span>Buka Shopify Dashboard</span>
+              <span>→</span>
+            </button>
+            <button (click)="tryAccessAdmin('/admin/shipping')" class="btn-cute-secondary">
+              <span>Simulasi Ongkir JNE / J&T</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="admin-cta-right">
+          <div class="mini-shopify-mockup">
+            <div class="mockup-header">
+              <div class="mockup-dots"><span></span><span></span><span></span></div>
+              <div class="mockup-url">admin.shopify.com/store/sybofficial</div>
+            </div>
+            <div class="mockup-body">
+              <div class="mockup-stat-line">
+                <span>Orders: <strong>10 Pending</strong></span>
+                <span class="mockup-active-chip">Active</span>
+              </div>
+              <div class="mockup-table-mini">
+                <div class="mockup-row-mini">NEW SYB Facial Glowing Peeling Gel (123,517 in stock)</div>
+                <div class="mockup-row-mini">NEW SYB [PAKET RITUAL MALAM 3in1] (2,578 in stock)</div>
+                <div class="mockup-row-mini">SYB Bibit Whitening DNA Salmon (44,427 in stock)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- =========================================================================
+     FOOTER
+     ========================================================================= -->
+<footer class="main-footer">
+  <div class="footer-container">
+    <div class="footer-top-grid">
+      <div class="footer-col-brand">
+        <div class="brand-logo-group">
+          <div class="logo-heart-badge">💖</div>
+          <div class="logo-texts">
+            <span class="logo-main">SYB</span>
+            <span class="logo-sub">INDONESIA</span>
+          </div>
+        </div>
+        <p class="footer-tagline">
+          Inovasi skincare dan body whitening modern untuk perempuan Indonesia. Tampil cantik, bercahaya, dan percaya diri setiap hari.
+        </p>
+        <div class="footer-social-row">
+          <a href="#" class="social-circle">📸 IG: @sybindonesia</a>
+          <a href="#" class="social-circle">🎵 TikTok: @sybofficial</a>
+        </div>
+      </div>
+
+      <div class="footer-col-links">
+        <h4 class="footer-col-title">Kategori</h4>
+        <ul>
+          <li><a (click)="productService.setCategory('Wajah')">Perawatan Wajah</a></li>
+          <li><a (click)="productService.setCategory('Tubuh')">Perawatan Tubuh</a></li>
+          <li><a (click)="productService.setCategory('Makeup')">Makeup & Blush</a></li>
+          <li><a (click)="productService.setCategory('Paket Ritual')">Paket Ritual Malam</a></li>
+          <li><a (click)="productService.setCategory('Aksesoris')">Aksesoris Cantik</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col-links">
+        <h4 class="footer-col-title">Layanan Pelanggan</h4>
+        <ul>
+          <li><a href="#glow-ritual">Panduan Glow Ritual</a></li>
+          <li><a (click)="openQuiz()">Skin Match Quiz</a></li>
+          <li><a routerLink="/admin/shipping">Cek Tarif Ongkir</a></li>
+          <li><a href="#">Status Pengiriman Resi</a></li>
+          <li><a href="#">FAQ & Garansi BPOM</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col-links">
+        <h4 class="footer-col-title">Ekspedisi Resmi</h4>
+        <div class="logistics-pills">
+          <span class="logistics-pill jnt">J&T Express</span>
+          <span class="logistics-pill jne">JNE Express</span>
+          <span class="logistics-pill sicepat">SiCepat</span>
+          <span class="logistics-pill gosend">GoSend Instant</span>
+        </div>
+        <div class="bpom-seal-box">
+          <span class="bpom-icon">🛡️</span>
+          <div>
+            <div class="bpom-text-1">BADAN POM RI</div>
+            <div class="bpom-text-2">100% Certified Formula</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom-bar">
+      <p>© 2026 PT SYB Official Indonesia. Hak Cipta Dilindungi Undang-Undang.</p>
+      <div class="footer-bottom-links">
+        <a (click)="tryAccessAdmin('/admin/products')" style="cursor:pointer">Shopify Admin Dashboard</a>
+        <span>•</span>
+        <a href="#">Kebijakan Privasi</a>
+        <span>•</span>
+        <a href="#">Syarat & Ketentuan</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- =========================================================================
+     SLIDE-OVER CUTE CART DRAWER
+     ========================================================================= -->
+@if (cartService.isCartOpen()) {
+  <div class="cart-drawer-overlay" (click)="cartService.closeCart()">
+    <div class="cart-drawer-panel" (click)="$event.stopPropagation()">
+      <!-- Drawer Header -->
+      <div class="drawer-header">
+        <div class="drawer-header-title">
+          <span class="drawer-emoji">🛍️</span>
+          <h3>Keranjang Belanja</h3>
+          <span class="drawer-count-badge">({{ cartService.totalItemsCount() }} item)</span>
+        </div>
+        <button class="drawer-close-btn" (click)="cartService.closeCart()">✕</button>
+      </div>
+
+      <!-- Free Shipping Progress Tracker -->
+      <div class="free-shipping-tracker">
+        @if (cartService.remainingForFreeShipping() > 0) {
+          <div class="tracker-text">
+            <span>🚚 Tambah <strong>Rp {{ cartService.remainingForFreeShipping().toLocaleString('id-ID') }}</strong> lagi untuk <strong>FREE ONGKIR!</strong></span>
+          </div>
+        } @else {
+          <div class="tracker-text text-green">
+            <span>🎉 Selamat! Kamu berhak mendapatkan <strong>FREE ONGKIR</strong>!</span>
+          </div>
+        }
+        <div class="tracker-bar-bg">
+          <div class="tracker-bar-fill" [style.width.%]="cartService.freeShippingProgress()"></div>
+        </div>
+      </div>
+
+      <!-- Items List -->
+      <div class="drawer-items-list">
+        @for (item of cartService.items(); track item.id) {
+          <div class="cart-item-card">
+            <div class="cart-item-icon">{{ item.product.iconEmoji }}</div>
+            <div class="cart-item-info">
+              <h4 class="cart-item-title">{{ item.product.title }}</h4>
+              <div class="cart-item-variant">Varian: {{ item.variant.name }}</div>
+              <div class="cart-item-price">Rp {{ item.variant.price.toLocaleString('id-ID') }}</div>
+              
+              <div class="cart-item-controls">
+                <div class="qty-stepper">
+                  <button (click)="cartService.updateQuantity(item.id, item.quantity - 1)">-</button>
+                  <span>{{ item.quantity }}</span>
+                  <button (click)="cartService.updateQuantity(item.id, item.quantity + 1)">+</button>
+                </div>
+                <button class="cart-item-remove" (click)="cartService.removeItem(item.id)">Hapus</button>
+              </div>
+            </div>
+          </div>
+        } @empty {
+          <div class="cart-empty-state">
+            <span class="empty-cart-emoji">🥺🌸</span>
+            <h4>Keranjangmu masih kosong</h4>
+            <p>Yuk pilih skincare cute favoritmu sekarang!</p>
+            <button class="btn-cute-primary" (click)="cartService.closeCart()">Mulai Belanja</button>
+          </div>
+        }
+      </div>
+
+      <!-- Drawer Footer & Voucher -->
+      @if (cartService.items().length > 0) {
+        <div class="drawer-footer">
+          <!-- Voucher Box -->
+          <div class="voucher-input-group">
+            <input 
+              type="text" 
+              placeholder="Masukkan kode promo (e.g. GLOWGIRL)" 
+              [(ngModel)]="voucherInput"
+              (keyup.enter)="applyVoucher()"
+            />
+            <button class="btn-apply-voucher" (click)="applyVoucher()">Gunakan</button>
+          </div>
+
+          @if (voucherAlert()) {
+            <div class="voucher-alert-msg" [class.success]="voucherAlert()?.success">
+              {{ voucherAlert()?.text }}
+            </div>
+          }
+
+          @if (cartService.discountCode()) {
+            <div class="applied-voucher-chip">
+              <span>Voucher Aktif: <strong>{{ cartService.discountCode() }}</strong> (-{{ cartService.discountPercent() }}%)</span>
+              <button (click)="cartService.removeVoucher()">✕</button>
+            </div>
+          }
+
+          <!-- Cost Calculations -->
+          <div class="drawer-calc-row">
+            <span>Subtotal Produk</span>
+            <span>Rp {{ cartService.subtotal().toLocaleString('id-ID') }}</span>
+          </div>
+
+          @if (cartService.discountAmount() > 0) {
+            <div class="drawer-calc-row text-pink">
+              <span>Diskon Cantik Promo</span>
+              <span>-Rp {{ cartService.discountAmount().toLocaleString('id-ID') }}</span>
+            </div>
+          }
+
+          <div class="drawer-calc-row">
+            <span>Estimasi Ongkir</span>
+            <span>
+              @if (cartService.shippingFee() === 0) {
+                <strong class="text-green">GRATIS (Promo)</strong>
+              } @else {
+                Rp {{ cartService.shippingFee().toLocaleString('id-ID') }}
+              }
+            </span>
+          </div>
+
+          <div class="drawer-calc-row total-row">
+            <span>Total Pembayaran</span>
+            <span class="grand-total-amount">Rp {{ cartService.grandTotal().toLocaleString('id-ID') }}</span>
+          </div>
+
+          <button class="btn-cute-primary checkout-full-btn" (click)="openCheckout()">
+            Lanjut ke Pembayaran 💖
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+}
+
+<!-- =========================================================================
+     PRODUCT QUICK VIEW MODAL
+     ========================================================================= -->
+@if (productService.quickViewProduct(); as product) {
+  <div class="modal-backdrop" (click)="productService.closeQuickView()">
+    <div class="quick-view-card glass-panel" (click)="$event.stopPropagation()">
+      <button class="modal-close-btn" (click)="productService.closeQuickView()">✕</button>
+
+      <div class="quick-view-grid">
+        <div class="quick-view-left" [style.background]="'radial-gradient(circle, ' + product.accentColor + '25 0%, transparent 70%)'">
+          <div class="quick-view-big-emoji">{{ product.iconEmoji }}</div>
+          <div class="quick-view-badge">{{ product.badge }}</div>
+          <div class="quick-view-bpom">No. BPOM: {{ product.bpomNumber }}</div>
+        </div>
+
+        <div class="quick-view-right">
+          <span class="product-category-text">{{ product.categoryLabel }}</span>
+          <h2 class="quick-title">{{ product.title }}</h2>
+          <p class="quick-tagline">{{ product.heroTagline }}</p>
+
+          <div class="quick-price-row">
+            <span class="price-main">Rp {{ getSelectedVariant(product).price.toLocaleString('id-ID') }}</span>
+            @if (product.originalPrice > getSelectedVariant(product).price) {
+              <span class="price-crossed">Rp {{ product.originalPrice.toLocaleString('id-ID') }}</span>
+            }
+          </div>
+
+          <p class="quick-desc">{{ product.description }}</p>
+
+          <!-- Key Ingredients -->
+          <div class="quick-section">
+            <h4 class="quick-subtitle">Kandungan Utama:</h4>
+            <div class="ingredients-tags">
+              @for (ing of product.keyIngredients; track ing) {
+                <span class="ingredient-pill">✨ {{ ing }}</span>
+              }
+            </div>
+          </div>
+
+          <!-- Benefits List -->
+          <div class="quick-section">
+            <h4 class="quick-subtitle">Manfaat Utama:</h4>
+            <ul class="benefits-checklist">
+              @for (b of product.benefits; track b) {
+                <li>✓ {{ b }}</li>
+              }
+            </ul>
+          </div>
+
+          <!-- Variants Selector -->
+          @if (product.variants.length > 1) {
+            <div class="quick-section">
+              <h4 class="quick-subtitle">Pilih Varian:</h4>
+              <div class="variants-row">
+                @for (v of product.variants; track v.id) {
+                  <button 
+                    class="variant-chip" 
+                    [class.active]="getSelectedVariant(product).id === v.id"
+                    (click)="selectVariant(product, v)">
+                    {{ v.name }}
+                  </button>
+                }
+              </div>
+            </div>
+          }
+
+          <div class="quick-action-bottom">
+            <button 
+              class="btn-cute-primary" 
+              [disabled]="product.inventory === 0"
+              (click)="onAddToCart(product); productService.closeQuickView()">
+              + Masukkan ke Keranjang
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- =========================================================================
+     SKIN MATCH QUIZ MODAL
+     ========================================================================= -->
+@if (isQuizOpen()) {
+  <div class="modal-backdrop" (click)="closeQuiz()">
+    <div class="quiz-modal-card glass-panel" (click)="$event.stopPropagation()">
+      <button class="modal-close-btn" (click)="closeQuiz()">✕</button>
+
+      <div class="quiz-header">
+        <span class="quiz-badge">✨ AI SKIN MATCH QUIZ</span>
+        <h3 class="quiz-main-title">Temukan Formula Glowing Impianmu</h3>
+        <p class="quiz-subtitle">Jawab 3 pertanyaan kilat untuk rekomendasi produk SYB yang paling tepat.</p>
+        <div class="quiz-progress-dots">
+          <span [class.active]="quizStep() >= 1"></span>
+          <span [class.active]="quizStep() >= 2"></span>
+          <span [class.active]="quizStep() >= 3"></span>
+          <span [class.active]="quizStep() >= 4"></span>
+        </div>
+      </div>
+
+      <div class="quiz-body">
+        <!-- Question 1 -->
+        @if (quizStep() === 1) {
+          <div class="quiz-question-box">
+            <h4 class="q-title">1. Apa tipe kulit wajah / badanmu saat ini?</h4>
+            <div class="q-options-grid">
+              @for (opt of ['Kering & Kusam', 'Berminyak & Pori Besar', 'Kombinasi Normal', 'Sensitif Mudah Kemerahan']; track opt) {
+                <button 
+                  class="q-option-pill" 
+                  [class.selected]="quizSkinType() === opt"
+                  (click)="quizSkinType.set(opt)">
+                  {{ opt }}
+                </button>
+              }
+            </div>
+            <button class="btn-cute-primary q-next-btn" (click)="quizStep.set(2)">Lanjut ke Pertanyaan 2 →</button>
+          </div>
+        }
+
+        <!-- Question 2 -->
+        @if (quizStep() === 2) {
+          <div class="quiz-question-box">
+            <h4 class="q-title">2. Apa masalah kulit yang paling ingin kamu perbaiki?</h4>
+            <div class="q-options-grid">
+              @for (opt of ['Kulit Belang & Noda Hitam', 'Kering Bersisik & Kasar', 'Jerawat & Kemerahan', 'Siku, Lutut & Lipatan Gelap']; track opt) {
+                <button 
+                  class="q-option-pill" 
+                  [class.selected]="quizConcern() === opt"
+                  (click)="quizConcern.set(opt)">
+                  {{ opt }}
+                </button>
+              }
+            </div>
+            <div class="q-nav-buttons">
+              <button class="btn-cute-secondary" (click)="quizStep.set(1)">← Kembali</button>
+              <button class="btn-cute-primary" (click)="quizStep.set(3)">Lanjut ke Pertanyaan 3 →</button>
+            </div>
+          </div>
+        }
+
+        <!-- Question 3 -->
+        @if (quizStep() === 3) {
+          <div class="quiz-question-box">
+            <h4 class="q-title">3. Apa hasil impian yang paling kamu harapkan?</h4>
+            <div class="q-options-grid">
+              @for (opt of ['Glass Skin Glowing Cepat', 'Tone-up Cerah Seketika', 'Kulit Halus Tanpa Daki', 'Perawatan Malam Intensif']; track opt) {
+                <button 
+                  class="q-option-pill" 
+                  [class.selected]="quizGoal() === opt"
+                  (click)="quizGoal.set(opt)">
+                  {{ opt }}
+                </button>
+              }
+            </div>
+            <div class="q-nav-buttons">
+              <button class="btn-cute-secondary" (click)="quizStep.set(2)">← Kembali</button>
+              <button class="btn-cute-primary" (click)="finishQuiz()">Lihat Rekomendasi ✨</button>
+            </div>
+          </div>
+        }
+
+        <!-- Question 4: Quiz Result -->
+        @if (quizStep() === 4 && quizResultProduct(); as result) {
+          <div class="quiz-result-box">
+            <span class="result-congrats">🎉 PERFECT MATCH DITEMUKAN!</span>
+            <div class="result-product-card">
+              <div class="result-emoji">{{ result.iconEmoji }}</div>
+              <div>
+                <span class="result-chip">Rekomendasi Utama</span>
+                <h4 class="result-product-name">{{ result.title }}</h4>
+                <p class="result-desc">{{ result.subtitle }}</p>
+                <div class="result-price">Rp {{ result.price.toLocaleString('id-ID') }}</div>
+              </div>
+            </div>
+
+            <div class="result-actions">
+              <button 
+                class="btn-cute-primary" 
+                (click)="onAddToCart(result); closeQuiz()">
+                + Tambah Hasil Quiz ke Bag
+              </button>
+              <button class="btn-cute-secondary" (click)="quizStep.set(1)">
+                Ulangi Quiz
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}
+
+<!-- =========================================================================
+     CHECKOUT SIMULATION MODAL
+     ========================================================================= -->
+@if (isCheckoutOpen()) {
+  <div class="modal-backdrop" (click)="closeCheckout()">
+    <div class="checkout-modal-card glass-panel" (click)="$event.stopPropagation()">
+      <button class="modal-close-btn" (click)="closeCheckout()">✕</button>
+
+      @if (!checkoutSuccess()) {
+        <div class="checkout-header">
+          <span class="checkout-badge">CHECKOUT RESMI SYB</span>
+          <h3 class="checkout-title">Informasi Pengiriman & Pembayaran</h3>
+        </div>
+
+        <div class="checkout-form">
+          <div class="form-group">
+            <label>Nama Lengkap Penerima</label>
+            <input type="text" [(ngModel)]="checkoutName" placeholder="Nama lengkap..." />
+          </div>
+
+          <div class="form-group">
+            <label>Nomor WhatsApp / HP</label>
+            <input type="text" [(ngModel)]="checkoutPhone" placeholder="0812..." />
+          </div>
+
+          <div class="form-group">
+            <label>Alamat Lengkap Tujuan</label>
+            <textarea [(ngModel)]="checkoutAddress" rows="2" placeholder="Nama jalan, nomor rumah, RT/RW, kota..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Pilihan Ekspedisi Pengiriman</label>
+            <select [(ngModel)]="checkoutCourier" class="checkout-select">
+              <option value="J&T">🔴 J&T Express Indonesia (Cepat & Rekomendasi)</option>
+              <option value="JNE">🔵 JNE Regular (Andalan)</option>
+              <option value="SICEPAT">🔴 SiCepat HALU</option>
+            </select>
+          </div>
+
+          <div class="checkout-summary-box">
+            <div class="summary-line">
+              <span>Total Pesanan ({{ cartService.totalItemsCount() }} item):</span>
+              <strong>Rp {{ cartService.grandTotal().toLocaleString('id-ID') }}</strong>
+            </div>
+            <div class="summary-method">
+              <span>Metode Bayar: <strong>QRIS / BCA Virtual Account (Instant)</strong></span>
+            </div>
+          </div>
+
+          <button class="btn-cute-primary checkout-btn-submit" (click)="confirmOrder()">
+            Konfirmasi Pesanan Cantik 💖
+          </button>
+        </div>
+      } @else {
+        <div class="checkout-success-state">
+          <div class="success-icon-big">🎉💖</div>
+          <h3>Pesanan Berhasil Diterima!</h3>
+          <p>Terima kasih <strong>{{ checkoutName }}</strong>! Pesananmu telah masuk ke antrean pemrosesan di <strong>Dashboard Shopify SYBofficial</strong>.</p>
+          <div class="success-details-box">
+            <div>No. Pesanan: <strong>#SYB-{{ 10822 }}</strong></div>
+            <div>Kurir Dipilih: <strong>{{ checkoutCourier }} Express</strong></div>
+            <div>Total: <strong>Rp {{ cartService.grandTotal().toLocaleString('id-ID') }}</strong></div>
+          </div>
+          <p class="success-hint">Pesanan ini dapat dicek di tab Orders pada Shopify Admin!</p>
+          <div class="success-action-row">
+            <a routerLink="/admin/orders" class="btn-cute-primary" (click)="closeCheckout()">
+              Buka di Shopify Admin (Tab Orders) →
+            </a>
+            <button class="btn-cute-secondary" (click)="closeCheckout()">
+              Kembali ke Toko
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+}
+
+<!-- =========================================================================
+     MODAL: SECURE CIPHER AUTHENTICATION (PBKDF2 SHA-256 + AES-GCM 256)
+     ========================================================================= -->
+@if (authService.isLoginModalOpen()) {
+  <div class="modal-backdrop" (click)="authService.closeLoginModal()">
+    <div class="secure-auth-modal glass-panel" (click)="$event.stopPropagation()">
+      <button class="modal-close-btn" (click)="authService.closeLoginModal()">✕</button>
+
+      <!-- Auth Modal Header -->
+      <div class="auth-modal-header">
+        <div class="auth-lock-shield">
+          <span class="auth-shield-emoji">🔐</span>
+        </div>
+        <div class="auth-security-tag">
+          <span class="cipher-dot"></span>
+          <span>AES-256-GCM & PBKDF2 Cipher</span>
+        </div>
+        <h3 class="auth-modal-title">Login Admin SYB Official</h3>
+        <p class="auth-modal-desc">
+          Otorisasi khusus untuk mengelola produk, mengubah harga, memperbarui stok varian, dan mengakses dashboard Shopify.
+        </p>
+      </div>
+
+      <!-- Auth Form Body -->
+      <form class="auth-modal-form" (submit)="handleLogin(); $event.preventDefault()">
+        <!-- Error Alert -->
+        @if (authService.loginError()) {
+          <div class="auth-error-banner">
+            <span class="error-icon">⚠️</span>
+            <span>{{ authService.loginError() }}</span>
+          </div>
+        }
+
+        <div class="form-group">
+          <label for="admin-identifier">Username atau Email Admin</label>
+          <div class="auth-input-wrapper">
+            <span class="input-icon">👤</span>
+            <input 
+              id="admin-identifier"
+              type="text" 
+              [(ngModel)]="loginIdentifier" 
+              name="loginIdentifier"
+              placeholder="e.g. admin@sybindonesia.com" 
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="admin-password">Kata Sandi (Cipher Hash Protected)</label>
+          <div class="auth-input-wrapper">
+            <span class="input-icon">🔑</span>
+            <input 
+              id="admin-password"
+              [type]="showPassword ? 'text' : 'password'" 
+              [(ngModel)]="loginPassword" 
+              name="loginPassword"
+              placeholder="Masukkan password admin..." 
+              required
+            />
+            <button 
+              type="button" 
+              class="pwd-toggle-btn" 
+              (click)="showPassword = !showPassword"
+              title="Tampilkan / Sembunyikan Sandi">
+              {{ showPassword ? '🙈' : '👁️' }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Demo Hint & Autofill -->
+        <div class="auth-demo-hint-box">
+          <div class="demo-hint-title">
+            <span>💡 Akun Demo Admin Siap Pakai:</span>
+          </div>
+          <div class="demo-credentials-line">
+            <code>admin@sybindonesia.com</code> / <code>admin123</code>
+          </div>
+          <button type="button" class="btn-autofill-demo" (click)="fillDemoAdmin()">
+            ⚡ Masukkan Akun Demo Otomatis
+          </button>
+        </div>
+
+        <!-- Submit Button -->
+        <button 
+          type="submit" 
+          class="btn-cute-primary auth-submit-btn" 
+          [disabled]="authService.isAuthenticating()">
+          @if (authService.isAuthenticating()) {
+            <span class="spinner-icon">⏳</span> Memverifikasi Cipher...
+          } @else {
+            <span>Masuk ke Dashboard Shopify 🛍️</span>
+          }
+        </button>
+
+        <div class="auth-security-footer">
+          <span class="shield-mini-icon">🛡️</span>
+          <span>Diproteksi dengan Enkripsi SHA-256 & Token AES Session Storage</span>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+
